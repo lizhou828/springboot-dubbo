@@ -9,6 +9,8 @@ package com.example.consumer.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.example.dubboApi.SayHello;
+import com.example.dubboApi.model.Area;
+import com.example.dubboApi.service.AreaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,9 +26,18 @@ public class IndexController {
     @Reference
     SayHello sayHello;
 
+    @Reference
+    AreaService areaService;
+
     @RequestMapping("/test")
     public String say(@RequestParam("name") String name) {
         return sayHello.sayHello(name);
+    }
+
+
+    @RequestMapping("/testArea")
+    public Area testArea() {
+        return areaService.getByPK(1);
     }
 
 }

@@ -26,28 +26,37 @@
             <version>0.0.1</version>
         </dependency>
 
-
         <dependency>
             <groupId>io.dubbo.springboot</groupId>
             <artifactId>spring-boot-starter-dubbo</artifactId>
             <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.zookeeper</groupId>
-            <artifactId>zookeeper</artifactId>
-            <version>3.4.6</version>
             <exclusions>
+                <!--去除低版本的com.alibaba依赖-->
                 <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
+                    <groupId>com.alibaba</groupId>
+                    <artifactId>dubbo</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
-
+        <!--添加2.6.2的dubbo依赖-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo</artifactId>
+            <version>2.6.2</version>
+            <exclusions>
+                <exclusion>
+                    <!--去掉低版本的依赖-->
+                    <artifactId>spring-context</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!--zookeeper客户端相关的curator依赖-->
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-framework</artifactId>
+            <version>2.8.0</version>
+        </dependency>
 
 
         <dependency>
@@ -77,7 +86,98 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.0.13</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.34</version>
+        </dependency>
     </dependencies>
+
+
+    <build>
+        <finalName>common-dubbo-service-provider</finalName>
+        <!--需要过滤的配置文件目录-->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.1.4.RELEASE</version>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <propertie.log4j>INFO</propertie.log4j>
+                <propertie.spring.datasource.url>jdbc:mysql://192.168.2.123:3306/land?useUnicode=true&amp;characterEncoding=utf-8</propertie.spring.datasource.url>
+                <propertie.spring.datasource.username>root</propertie.spring.datasource.username>
+                <propertie.spring.datasource.password>
+                    NYpNli3+cq4CoWoC0Kiwu7tun2lIqIwocbg6ZZbnVkwuqdLkw3JbykjbvunACiH2emIc9zt2YQEl+EuMnrWphw==
+                </propertie.spring.datasource.password>
+                <propertie.spring.datasource.druid.stat.config_decrypt_publickey>
+                    MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKYEq6QIF3Vk8PnvThfoLP4aOPyRzuxGFT3D6NUr+gY4M5pmVJzk/xh01uurI71h79cDEpwEn/G0cb6+u0O1gWkCAwEAAQ==
+                </propertie.spring.datasource.druid.stat.config_decrypt_publickey>
+
+                <propertie.spring.redis.host>192.168.2.122</propertie.spring.redis.host>
+                <propertie.spring.redis.port>6379</propertie.spring.redis.port>
+
+            </properties>
+        </profile>
+
+        <profile>
+            <id>test</id>
+            <properties>
+                <propertie.log4j>WARN</propertie.log4j>
+                <propertie.spring.datasource.url>jdbc:mysql://192.168.2.121:3306/land?useUnicode=true&amp;characterEncoding=utf-8</propertie.spring.datasource.url>
+                <propertie.spring.datasource.username>root</propertie.spring.datasource.username>
+                <propertie.spring.datasource.password>
+                    ncMAqqLOwgFflqjDDhiF/tDnWmqcODHriC9TetU6AYE8nXLoNwAir/Imp5wxt3YhtanufP1gUEXX12moSJbJ1A==
+                </propertie.spring.datasource.password>
+                <propertie.spring.datasource.druid.stat.config_decrypt_publickey>
+                    MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALH/vVJFHoupgxXGBUIIUJ+9NVYRYKdQEvfdZrb+/tT0x6At0Wt2fhLPx8+AYNp8UrwXcDLB36rNtKYPy8EceY8CAwEAAQ==
+                </propertie.spring.datasource.druid.stat.config_decrypt_publickey>
+
+                <propertie.spring.redis.host>192.168.2.122</propertie.spring.redis.host>
+                <propertie.spring.redis.port>6379</propertie.spring.redis.port>
+            </properties>
+        </profile>
+    </profiles>
 
 
 </project>

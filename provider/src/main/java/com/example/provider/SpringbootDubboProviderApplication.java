@@ -9,7 +9,9 @@ package com.example.provider;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * @author lizhou
@@ -19,6 +21,8 @@ import org.springframework.context.annotation.ImportResource;
 
 @SpringBootApplication
 @ImportResource(value = {"classpath:dubbo-provider.xml"})
+@EnableTransactionManagement//开启事物管理
+@EnableAspectJAutoProxy //开启aop自动代理
 public class SpringbootDubboProviderApplication {
 
     public static void main(String[] args) {

@@ -9,6 +9,8 @@ package com.example.consumer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ImportResource;
 
@@ -17,7 +19,7 @@ import org.springframework.context.annotation.ImportResource;
  * @version 1.0
  * @Date 2019年05月05日 15时55分
  */
-@SpringBootApplication
+@SpringBootApplication(exclude={DataSourceAutoConfiguration.class,HibernateJpaAutoConfiguration.class})
 @ImportResource("classpath:dubbo-consumer.xml")
 public class SpringbootDubboConsumerApplication {
 

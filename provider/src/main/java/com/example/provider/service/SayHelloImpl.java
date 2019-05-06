@@ -9,6 +9,7 @@ package com.example.provider.service;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.example.dubboApi.SayHello;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author lizhou
@@ -16,6 +17,7 @@ import com.example.dubboApi.SayHello;
  * @Date 2019年05月05日 15时43分
  */
 
+@Transactional(rollbackFor = Exception.class)
 @Service
 public class SayHelloImpl implements SayHello {
     @Override
